@@ -2,13 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\Streaming;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Movie>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Tag>
  */
-class MovieFactory extends Factory
+class TagFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,9 +17,7 @@ class MovieFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake() -> name(),
-            'streaming_id' => Streaming::factory(),
-            'Rating' =>  '3/5'
+            //
         ];
     }
 }
