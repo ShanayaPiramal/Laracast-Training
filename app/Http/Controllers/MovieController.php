@@ -2,6 +2,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Gate; 
+use App\Models\User;    
+
 
 use App\Models\Movie;
 
@@ -23,6 +28,15 @@ class MovieController extends Controller
 
     }
     public function edit(Movie $movie){
+        Gate::define('edit-movie', function(User $user, Movie $movie){
+            return $movie->streaming->user->is($user);
+        });
+        if(Auth::guest()){
+            return redirect('/login');  
+        }
+      
+        Gate::authorize('edit-movie', $movie);
+
     return view('movies.edit', ['movie' => $movie]);
 
     }
@@ -31,11 +45,14 @@ class MovieController extends Controller
             'name' => ['required'],
             'Rating' => ['required'],
         ]);
-        Movie::create([
+        $movie = Movie::create([
             'name' => request('name'),
             'Rating' => request('Rating'), 
             'streaming_id' => 1
         ]);
+        Mail::to($movie->streaming->user)->send(
+            new \App\Mail\MovieListed());
+        
         return redirect('/movies');
         
     }

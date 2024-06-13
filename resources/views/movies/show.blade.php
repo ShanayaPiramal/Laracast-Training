@@ -8,11 +8,14 @@
    <p>
         This movie is rated {{$movie['Rating']}}.
    </p>
-   <p>
-    <a href="/movies/{{$movie->id}}/edit">
-        Edit
-    </a>
-    </p>
+   @can('edit', $movie)
+        <p class = "mt-6">
+                <a href="/movies/{{$movie->id}}/edit">
+                    Edit
+                </a>
+        </p>
+    @endcan 
+    
 
 
 
